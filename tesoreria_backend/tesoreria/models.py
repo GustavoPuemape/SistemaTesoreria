@@ -25,6 +25,7 @@ class Movimiento(models.Model):
         ('EGRESO', 'Egreso'),
     ]
     
+    
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='movimientos')
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name='movimientos')
     tipo = models.CharField(max_length=10, choices=TIPO_CHOICES)
