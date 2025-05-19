@@ -1,0 +1,66 @@
+<div class="category-container">
+  <div class="header-actions">
+    <h2>Gestión de Categorías</h2>
+    <button mat-raised-button color="primary" (click)="openForm()">
+      <mat-icon>add</mat-icon> Nueva Categoría
+    </button>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <div class="filter-section">
+        <mat-radio-group [(ngModel)]="filterValue" (change)="applyFilter(filterValue)">
+          <mat-radio-button value="TODAS">Todas</mat-radio-button>
+          <mat-radio-button value="INGRESO">Ingresos</mat-radio-button>
+          <mat-radio-button value="EGRESO">Egresos</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div *ngIf="loading" class="loading-spinner">
+        <mat-spinner diameter="50"></mat-spinner>
+      </div>
+
+      <div *ngIf="!loading">
+        <table mat-table [dataSource]="filteredCategories" class="full-width-table">
+          <!-- Nombre Column -->
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+            <td mat-cell *matCellDef="let category">{{ category.nombre }}</td>
+          </ng-container>
+
+          <!-- Tipo Column -->
+          <ng-container matColumnDef="tipo">
+            <th mat-header-cell *matHeaderCellDef>Tipo</th>
+            <td mat-cell *matCellDef="let category">
+              <span class="type-badge" [class.income]="category.tipo === 'INGRESO'" 
+                                  [class.expense]="category.tipo === 'EGRESO'">
+                {{ category.tipo === 'INGRESO' ? 'Ingreso' : 'Egreso' }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let category">
+              <button mat-icon-button color="primary" (click)="openForm(category)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteCategory(category.id!)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div *ngIf="filteredCategories.length === 0" class="no-results">
+          <mat-icon>info</mat-icon>
+          <span>No se encontraron categorías</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>
+    {{ isEdit ? 'Editar Categoría' : 'Nueva Categoría' }}
+  </h2>
+  
+  <mat-dialog-content>
+    <form [formGroup]="categoryForm">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" required>
+        <mat-error *ngIf="categoryForm.get('nombre')?.hasError('required')">
+          Nombre es requerido
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-radio-group formControlName="tipo" class="radio-group">
+        <mat-radio-button value="INGRESO" color="primary">Ingreso</mat-radio-button>
+        <mat-radio-button value="EGRESO" color="primary">Egreso</mat-radio-button>
+      </mat-radio-group>
+    </form>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions class="mat-dialog-actions" style="justify-content: flex-end;">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="onSubmit()"
+      [disabled]="!categoryForm.valid || loading"
+    >
+      <span *ngIf="!loading">{{ isEdit ? 'Actualizar' : 'Crear' }}</span>
+      <mat-spinner *ngIf="loading" diameter="24"></mat-spinner>
+    </button>
+  </mat-dialog-actions>

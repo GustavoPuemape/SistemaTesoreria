@@ -1,0 +1,34 @@
+.container {
+    padding: 20px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  mat-card {
+    margin-bottom: 20px;
+  }
+  
+  .ingreso {
+    color: #4caf50;
+    font-weight: 500;
+  }
+  
+  .egreso {
+    color: #f44336;
+    font-weight: 500;
+  }
+  
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+  }
+  
+  button[mat-icon-button] {
+    margin: 0 5px;
+  }

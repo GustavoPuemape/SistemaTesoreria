@@ -1,0 +1,91 @@
+<div class="dashboard-container">
+    <h2 class="dashboard-title">Resumen Financiero</h2>
+  
+    <div *ngIf="loading" class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
+  
+    <div *ngIf="!loading && dashboardData" class="dashboard-content">
+      <div class="summary-cards">
+        <!-- Saldo Actual -->
+        <mat-card class="summary-card">
+          <mat-card-header>
+            <mat-card-title>Saldo Actual</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="amount {{getBalanceClass()}}">
+              {{ dashboardData.saldo_total | currency:'USD':'symbol':'1.2-2' }}
+            </div>
+          </mat-card-content>
+        </mat-card>
+  
+        <!-- Ingresos del Mes -->
+        <mat-card class="summary-card">
+          <mat-card-header>
+            <mat-card-title>Ingresos del Mes</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="amount positive">
+              +{{ dashboardData.ingresos_mes | currency:'USD':'symbol':'1.2-2' }}
+            </div>
+          </mat-card-content>
+        </mat-card>
+  
+        <!-- Egresos del Mes -->
+        <mat-card class="summary-card">
+          <mat-card-header>
+            <mat-card-title>Egresos del Mes</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="amount negative">
+              -{{ dashboardData.egresos_mes | currency:'USD':'symbol':'1.2-2' }}
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+  
+      <!-- Últimos Movimientos -->
+      <mat-card class="movements-card">
+        <mat-card-header>
+          <mat-card-title>Últimos Movimientos</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="table-container">
+            <table mat-table [dataSource]="dashboardData.ultimos_movimientos" class="full-width-table">
+              <!-- Fecha Column -->
+              <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef>Fecha</th>
+                <td mat-cell *matCellDef="let item">{{ item.fecha | date:'dd/MM/yyyy' }}</td>
+              </ng-container>
+  
+              <!-- Descripción Column -->
+              <ng-container matColumnDef="descripcion">
+                <th mat-header-cell *matHeaderCellDef>Descripción</th>
+                <td mat-cell *matCellDef="let item">{{ item.descripcion || 'Sin descripción' }}</td>
+              </ng-container>
+  
+              <!-- Categoría Column -->
+              <ng-container matColumnDef="categoria">
+                <th mat-header-cell *matHeaderCellDef>Categoría</th>
+                <td mat-cell *matCellDef="let item">{{ item.categoria_nombre }}</td>
+              </ng-container>
+  
+              <!-- Monto Column -->
+              <ng-container matColumnDef="monto">
+                <th mat-header-cell *matHeaderCellDef>Monto</th>
+                <td mat-cell *matCellDef="let item">
+                  <span class="movement-amount" [class.positive]="item.tipo === 'INGRESO'" 
+                                            [class.negative]="item.tipo === 'EGRESO'">
+                    {{ item.tipo === 'INGRESO' ? '+' : '-' }}{{ item.monto | currency:'USD':'symbol':'1.2-2' }}
+                  </span>
+                </td>
+              </ng-container>
+  
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>

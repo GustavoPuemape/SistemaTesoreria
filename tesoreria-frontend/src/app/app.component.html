@@ -1,0 +1,44 @@
+<mat-toolbar color="primary" class="toolbar">
+  <button mat-icon-button (click)="toggleSidenav()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="toolbar-title">{{title}}</span>
+  <span class="spacer"></span>
+  <span class="username" *ngIf="authService.isLoggedIn()">
+    {{ authService.getUsername() }}
+  </span>
+  <button mat-icon-button (click)="logout()" *ngIf="authService.isLoggedIn()">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="side" opened class="sidenav">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="active" 
+         [class.active]="isActive('/dashboard')">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </a>
+      <a mat-list-item routerLink="/movimientos" routerLinkActive="active" 
+         [class.active]="isActive('/movimientos')">
+        <mat-icon>list_alt</mat-icon>
+        <span>Movimientos</span>
+      </a>
+      <a mat-list-item routerLink="/categorias" routerLinkActive="active" 
+         [class.active]="isActive('/categorias')">
+        <mat-icon>category</mat-icon>
+        <span>Categorías</span>
+      </a>
+      <a mat-list-item routerLink="/reporte" routerLinkActive="active" 
+         [class.active]="isActive('/reporte')">
+        <mat-icon>assessment</mat-icon>
+        <span>Reportes</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
